@@ -11,28 +11,26 @@ import { StartRoomPage } from '@/Components/Pages/StartRoomPage';
 
 const queryClient = new QueryClient();
 
-const Root = () => {
-	return (
-		<div className="flex min-h-dvh flex-col">
-			<AppBar>
-				<AppBarLeft>
-					<h1 className="text-md font-semibold tracking-tight text-foreground mr-10">Sprint Retro</h1>
-				</AppBarLeft>
-				<AppBarRight>
-					<ThemeToggle />
-				</AppBarRight>
-
-			</AppBar>
-
-			<main className="flex min-h-0 flex-1 flex-col">
-				<Outlet />
-			</main>
-		</div>
-	);
-};
-
 const rootRoute = createRootRoute({
-	component: () => <Root />,
+	component: () => {
+		return (
+			<div className="flex min-h-dvh flex-col">
+				<AppBar>
+					<AppBarLeft>
+						<h1 className="text-md font-semibold tracking-tight text-foreground mr-10">Sprint Retro</h1>
+					</AppBarLeft>
+					<AppBarRight>
+						<ThemeToggle />
+					</AppBarRight>
+
+				</AppBar>
+
+				<main className="flex min-h-0 flex-1 flex-col">
+					<Outlet />
+				</main>
+			</div>
+		);
+	},
 });
 
 const indexRoute = createRoute({
