@@ -1,6 +1,5 @@
 import { Button } from '@ui/Button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@ui/Card';
-import { Input } from '@ui/Input';
 
 import { createRoomStore } from '@/stores/createRoomStore';
 
