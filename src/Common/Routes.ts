@@ -3,4 +3,5 @@ export enum Routes {
 	JOIN_ROOM = '/join',
 	CREATE_ROOM = '/create',
 	ROOM = '/room',
+	CONFIGURE_COLUMNS = '/columns'
 }
