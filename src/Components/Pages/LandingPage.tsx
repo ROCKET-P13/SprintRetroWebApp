@@ -29,10 +29,10 @@ export const LandingPage = () => {
 							className='w-full'
 							variant='secondary'
 							onClick={() => {
-								navigate({ to: Routes.START_ROOM });
+								navigate({ to: Routes.CREATE_ROOM });
 							}}
 						>
-							Start a room
+							Create a room
 						</Button>
 					</div>
 				</CardContent>

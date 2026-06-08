@@ -4,10 +4,10 @@ import { AppBar, AppBarLeft, AppBarRight } from '@ui/AppBar';
 import { ThemeToggle } from '@ui/ThemeToggle';
 
 import { Routes } from '@/Common/Routes';
+import { CreateRoomPage } from '@/Components/Pages/CreateRoomPage';
 import { JoinRoomPage } from '@/Components/Pages/JoinRoomPage';
 import { LandingPage } from '@/Components/Pages/LandingPage';
 import { RoomPage } from '@/Components/Pages/RoomPage';
-import { StartRoomPage } from '@/Components/Pages/StartRoomPage';
 
 const queryClient = new QueryClient();
 
@@ -47,8 +47,8 @@ const joinRoomRoute = createRoute({
 
 const startRoomRoute = createRoute({
 	getParentRoute: () => rootRoute,
-	path: Routes.START_ROOM,
-	component: StartRoomPage,
+	path: Routes.CREATE_ROOM,
+	component: CreateRoomPage,
 });
 
 const roomRoute = createRoute({

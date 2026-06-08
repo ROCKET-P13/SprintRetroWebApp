@@ -5,7 +5,7 @@ import { Input } from '@ui/Input';
 
 import { Routes } from '@/Common/Routes';
 
-export const StartRoomPage = () => {
+export const CreateRoomPage = () => {
 	const navigate = useNavigate();
 	return (
 		<div className='mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-4'>
@@ -19,7 +19,11 @@ export const StartRoomPage = () => {
 				<CardContent>
 					<div className='flex flex-col gap-4'>
 						<Input
-							label='Display Name'
+							label='Room Name'
+							placeholder='Sprint 42'
+						/>
+						<Input
+							label='Your Name'
 							placeholder='Lightning McQueen'
 						/>
 					</div>
