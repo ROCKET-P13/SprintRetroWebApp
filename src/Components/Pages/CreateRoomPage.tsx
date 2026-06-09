@@ -5,9 +5,19 @@ import { Input } from '@ui/Input';
 import { useMemo } from 'react';
 
 import { Routes } from '@/Common/Routes';
-import { RetroTemplates } from '@/Common/Templates';
+import { ClassicTemplate } from '@/Common/Templates/ClassicTemplate';
+import { EmptyTemplate } from '@/Common/Templates/EmptyTemplate';
+import { FourLsTemplate } from '@/Common/Templates/FourLsTemplate';
+import { MadSadGladTemplate } from '@/Common/Templates/MadSadGladTemplate';
 import { TemplateCard } from '@/Components/TemplateCard';
 import { createRoomStore } from '@/stores/createRoomStore';
+
+const RetroTemplates = Object.freeze([
+	EmptyTemplate,
+	ClassicTemplate,
+	FourLsTemplate,
+	MadSadGladTemplate,
+]);
 
 export const CreateRoomPage = () => {
 	const navigate = useNavigate();
