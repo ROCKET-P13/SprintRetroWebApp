@@ -4,7 +4,6 @@ import { AppBar, AppBarLeft, AppBarRight } from '@ui/AppBar';
 import { ThemeToggle } from '@ui/ThemeToggle';
 
 import { Routes } from '@/Common/Routes';
-import { ConfigureRoomColumnsPage } from '@/Components/Pages/ConfigureRoomColumnsPage';
 import { CreateRoomPage } from '@/Components/Pages/CreateRoomPage';
 import { JoinRoomPage } from '@/Components/Pages/JoinRoomPage';
 import { LandingPage } from '@/Components/Pages/LandingPage';
@@ -52,12 +51,6 @@ const createRoomRoute = createRoute({
 	component: CreateRoomPage,
 });
 
-const configureRoomColumnsRoute = createRoute({
-	getParentRoute: () => rootRoute,
-	path: Routes.CONFIGURE_COLUMNS,
-	component: ConfigureRoomColumnsPage,
-});
-
 const roomRoute = createRoute({
 	getParentRoute: () => rootRoute,
 	path: Routes.ROOM,
@@ -68,7 +61,6 @@ const routeTree = rootRoute.addChildren([
 	indexRoute,
 	joinRoomRoute,
 	createRoomRoute,
-	configureRoomColumnsRoute,
 	roomRoute,
 ]);
 
