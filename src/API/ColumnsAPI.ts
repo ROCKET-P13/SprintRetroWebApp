@@ -14,7 +14,7 @@ export class ColumnsAPI {
 	#url = '/columns';
 	#apiClient: APIClient;
 
-	constructor (params: ColumnsAPIConstructorParams) {
+	constructor (params: ColumnsAPIConstructorParams = {}) {
 		this.#apiClient = params.apiClient ?? new APIClient();
 	}
 

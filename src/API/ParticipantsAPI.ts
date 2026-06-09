@@ -14,7 +14,7 @@ export class ParticipantsAPI {
 	#url = '/participants';
 	#apiClient: APIClient;
 
-	constructor (params: ParticipantsAPIConstructorParams) {
+	constructor (params: ParticipantsAPIConstructorParams = {}) {
 		this.#apiClient = params.apiClient ?? new APIClient();
 	}
 

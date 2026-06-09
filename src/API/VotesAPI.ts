@@ -15,7 +15,7 @@ export class VotesAPI {
 	#url = '/participants';
 	#apiClient: APIClient;
 
-	constructor (params: VotesAPIConstructorParams) {
+	constructor (params: VotesAPIConstructorParams = {}) {
 		this.#apiClient = params.apiClient ?? new APIClient();
 	}
 

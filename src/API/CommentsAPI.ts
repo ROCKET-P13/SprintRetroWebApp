@@ -15,7 +15,7 @@ export class CommentsAPI {
 	#url = '/comments';
 	#apiClient: APIClient;
 
-	constructor (params: CommentsAPIConstructorParams) {
+	constructor (params: CommentsAPIConstructorParams = {}) {
 		this.#apiClient = params.apiClient ?? new APIClient();
 	}
 

@@ -9,15 +9,20 @@ interface GetByIdParams {
 	roomId: string;
 }
 
-interface CreateParams {
+export interface CreateParams {
 	name: string;
+	participantName: string;
+	columns?: Array<{
+		title: string;
+		position?: number;
+	}>
 }
 
 export class RoomsAPI {
 	#url = '/rooms';
 	#apiClient: APIClient;
 
-	constructor (params: RoomsAPIContructorParams) {
+	constructor (params: RoomsAPIContructorParams = {}) {
 		this.#apiClient = params.apiClient ?? new APIClient();
 	}
 
@@ -29,10 +34,10 @@ export class RoomsAPI {
 		return room;
 	}
 
-	async create ({ name }: CreateParams): Promise<Room> {
+	async create ({ name, participantName, columns }: CreateParams): Promise<Room> {
 		const room = await this.#apiClient.post({
 			url: `${this.#url}`,
-			body: { name },
+			body: { name, participantName, columns },
 		}) as Room;
 
 		return room;

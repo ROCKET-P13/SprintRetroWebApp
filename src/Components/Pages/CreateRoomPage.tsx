@@ -10,6 +10,7 @@ import { EmptyTemplate } from '@/Common/Templates/EmptyTemplate';
 import { FourLsTemplate } from '@/Common/Templates/FourLsTemplate';
 import { MadSadGladTemplate } from '@/Common/Templates/MadSadGladTemplate';
 import { TemplateCard } from '@/Components/TemplateCard';
+import { useCreateRoomMutation } from '@/hooks/mutations/useCreateRoomMutation';
 import { createRoomStore } from '@/stores/createRoomStore';
 
 const RetroTemplates = Object.freeze([
@@ -28,7 +29,17 @@ export const CreateRoomPage = () => {
 	const participantName = createRoomStore((state) => state.participantName);
 
 	const isCreateButtonDisabled = useMemo(() => !roomName || !participantName, [roomName, participantName]);
+	const createRoomMutation = useCreateRoomMutation();
+	const roomColumns = createRoomStore((state) => state.columns);
+	const handleSubmit = async () => {
+		const room = await createRoomMutation.mutateAsync({
+			name: roomName,
+			participantName,
+			columns: roomColumns,
+		});
 
+		console.log('created room', room);
+	};
 	return (
 		<div className='mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-4 gap-4'>
 			<Card>
@@ -77,7 +88,7 @@ export const CreateRoomPage = () => {
 					</Button>
 					<Button
 						disabled={isCreateButtonDisabled}
-						onClick={() => console.log('clicked create')}
+						onClick={handleSubmit}
 					>
 						Create
 					</Button>

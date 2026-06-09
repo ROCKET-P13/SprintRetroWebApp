@@ -21,7 +21,7 @@ export const TemplateCard = ({
 			className={
 				mergeTailwindClasses(
 					'w-full text-left rounded-lg border bg-card p-4',
-					'transition-all duration-150 ease-in-out',
+					'transition-all duration-150 ease-in-out cursor-pointer',
 					'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
 					selected ? 'bg-primary hover:bg-primary/90' : 'bg-transparent hover:bg-accent'
 				)
