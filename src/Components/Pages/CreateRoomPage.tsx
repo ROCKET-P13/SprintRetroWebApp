@@ -55,9 +55,9 @@ export const CreateRoomPage = () => {
 						Back
 					</Button>
 					<Button
-						onClick={() => console.log('clicked join')}
+						onClick={() => console.log('clicked create')}
 					>
-						Join
+						Create
 					</Button>
 				</CardFooter>
 			</Card>

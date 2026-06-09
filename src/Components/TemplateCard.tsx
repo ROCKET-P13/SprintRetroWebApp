@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import { RetroTemplate } from '@/types/RetroTemplate';
 import { mergeTailwindClasses } from '@/utils/mergeTailwindClasses';
 
@@ -27,7 +29,7 @@ export const TemplateCard = ({
 		>
 			<div className="flex items-start justify-between gap-2">
 				<div>
-					<div className="font-medium text-card-foreground">
+					<div className="font-medium text-foreground">
 						{template.name}
 					</div>
 
@@ -43,13 +45,13 @@ export const TemplateCard = ({
 							</div>
 						)
 						: (
-							template.columns.map((column, index) => (
+							template.columns.map((column) => (
 								<span
-									key={index}
+									key={_.join([column.title, column.position], '|')}
 									className={
 										mergeTailwindClasses(
-											'rounded-md px-2 py-1 text-xs text-muted font-semibold',
-											selected ? 'bg-foreground' : 'bg-muted text-muted-foreground'
+											'rounded-md px-2 py-1 text-xs text-muted-foreground font-semibold',
+											selected ? 'bg-primary-foreground text-muted' : 'bg-muted'
 										)
 									}
 								>
