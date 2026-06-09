@@ -2,15 +2,22 @@ import { useNavigate } from '@tanstack/react-router';
 import { Button } from '@ui/Button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@ui/Card';
 import { Input } from '@ui/Input';
-import { useState } from 'react';
+import { useMemo } from 'react';
 
 import { Routes } from '@/Common/Routes';
 import { RetroTemplates } from '@/Common/Templates';
 import { TemplateCard } from '@/Components/TemplateCard';
+import { createRoomStore } from '@/stores/createRoomStore';
 
 export const CreateRoomPage = () => {
 	const navigate = useNavigate();
-	const [selectedTemplateId, setSelectedTemplateId] = useState(RetroTemplates[0].id);
+	const selectTemplate = createRoomStore((state) => state.selectTemplate);
+	const selectedTemplateId = createRoomStore((state) => state.templateId);
+	const updateCreateRoomStore = createRoomStore((state) => state.updateCreateRoomStore);
+	const roomName = createRoomStore((state) => state.roomName);
+	const participantName = createRoomStore((state) => state.participantName);
+
+	const isCreateButtonDisabled = useMemo(() => !roomName || !participantName, [roomName, participantName]);
 
 	return (
 		<div className='mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-4 gap-4'>
@@ -25,10 +32,14 @@ export const CreateRoomPage = () => {
 							<Input
 								label='Room Name'
 								placeholder='e.g. sprint-42'
+								value={roomName}
+								onChange={(e) => updateCreateRoomStore({ roomName: e.target.value })}
 							/>
 							<Input
 								label='Your Name'
 								placeholder='Lightning McQueen'
+								value={participantName}
+								onChange={(e) => updateCreateRoomStore({ participantName: e.target.value })}
 							/>
 						</div>
 						<div className='flex flex-col gap-4'>
@@ -39,7 +50,7 @@ export const CreateRoomPage = () => {
 										key={template.id}
 										template={template}
 										selected={template.id === selectedTemplateId}
-										onSelect={() => setSelectedTemplateId(template.id)}
+										onSelect={() => selectTemplate(template)}
 									/>
 								))
 							}
@@ -55,6 +66,7 @@ export const CreateRoomPage = () => {
 						Back
 					</Button>
 					<Button
+						disabled={isCreateButtonDisabled}
 						onClick={() => console.log('clicked create')}
 					>
 						Create
