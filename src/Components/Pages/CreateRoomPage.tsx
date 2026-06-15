@@ -39,6 +39,7 @@ export const CreateRoomPage = () => {
 		});
 
 		console.log('created room', room);
+		navigate({ to: `${Routes.ROOM}/$roomId`, params: { roomId: room.id } });
 	};
 	return (
 		<div className='mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-4 gap-4'>

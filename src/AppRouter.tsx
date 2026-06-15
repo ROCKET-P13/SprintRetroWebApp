@@ -53,7 +53,7 @@ const createRoomRoute = createRoute({
 
 const roomRoute = createRoute({
 	getParentRoute: () => rootRoute,
-	path: Routes.ROOM,
+	path: `${Routes.ROOM}/$roomId`,
 	component: RoomPage,
 });
 
