@@ -1,6 +1,6 @@
-import { Button } from '@ui/Button';
-import { MessageSquare, Plus } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 
+import { AddCommentBox } from '@/Components/AddCommentBox';
 import { CommentCard } from '@/Components/CommentCard';
 
 interface RoomColumnProps {
@@ -58,16 +58,11 @@ export const RoomColumn = ({ title, comments = [] }: RoomColumnProps) => {
 							<div className="flex h-full items-center justify-center">
 								<div className="text-center">
 									<MessageSquare
-										className="
-									mx-auto
-									mb-2
-									size-8
-									text-muted-foreground
-								"
+										className="mx-auto mb-2 size-8 text-muted-foreground"
 									/>
 
 									<p className="text-sm text-muted-foreground">
-								No comments yet
+										No comments yet
 									</p>
 								</div>
 							</div>
@@ -89,12 +84,7 @@ export const RoomColumn = ({ title, comments = [] }: RoomColumnProps) => {
 						)
 				}
 			</div>
-			<div className="border-t py-3 px-5">
-				<Button variant='secondary' className='w-full bg-background'>
-					<Plus className="size-4" />
-					Add Comment
-				</Button>
-			</div>
+			<AddCommentBox />
 		</div>
 	);
 };
