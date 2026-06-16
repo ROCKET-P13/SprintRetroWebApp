@@ -10,7 +10,8 @@ interface RoomColumnProps {
 		body: string;
 		voteCount: number;
 		createdBy: string
-	}>
+		createdByName: string;
+	}>;
 }
 
 export const RoomColumn = ({ title, comments = [] }: RoomColumnProps) => {
@@ -77,9 +78,10 @@ export const RoomColumn = ({ title, comments = [] }: RoomColumnProps) => {
 									comments.map((comment) => (
 										<CommentCard
 											key={comment.id}
+											id={comment.id}
 											body={comment.body}
 											voteCount={comment.voteCount}
-											createdBy={comment.createdBy}
+											createdBy={comment.createdByName}
 										/>
 									))
 								}

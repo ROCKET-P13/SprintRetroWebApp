@@ -38,7 +38,6 @@ export const CreateRoomPage = () => {
 			columns: roomColumns,
 		});
 
-		console.log('created room', room);
 		navigate({ to: `${Routes.ROOM}/$roomId`, params: { roomId: room.id } });
 	};
 	return (

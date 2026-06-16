@@ -2,6 +2,7 @@ import { useParams } from '@tanstack/react-router';
 
 import { RoomColumn } from '@/Components/RoomColumn';
 import { useGetRoom } from '@/hooks/queries/useGetRoom';
+import { roomStore } from '@/stores/roomStore';
 
 export const RoomPage = () => {
 	const { roomId } = useParams({
@@ -13,6 +14,8 @@ export const RoomPage = () => {
 		isLoading,
 		error,
 	} = useGetRoom({ roomId });
+
+	const setRoom = roomStore((state) => state.setRoom);
 
 	if (isLoading) {
 		return (
@@ -33,6 +36,7 @@ export const RoomPage = () => {
 			</div>
 		);
 	}
+	setRoom(room);
 
 	const columns = [...(room.columns ?? [])].sort(
 		(a, b) => a.position - b.position
@@ -53,12 +57,12 @@ export const RoomPage = () => {
 			</header>
 
 			<div className="
-			grid
-			grid-cols-1
-			gap-6
-			p-6
-			md:grid-cols-2
-			lg:grid-cols-4
+				grid
+				grid-cols-1
+				gap-6
+				p-6
+				md:grid-cols-2
+				lg:grid-cols-4
 			">
 				{columns.map((column) => (
 					<RoomColumn

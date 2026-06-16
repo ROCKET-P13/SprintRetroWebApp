@@ -15,7 +15,7 @@ interface CreateRoomStore {
 	updateCreateRoomStore: (data: Partial<CreateRoomStore>) => void;
 }
 
-export const createRoomStore = create<CreateRoomStore>((set, get) => ({
+export const createRoomStore = create<CreateRoomStore>((set) => ({
 	roomName: '',
 	participantName: '',
 	templateId: TemplateIds.EMPTY,
