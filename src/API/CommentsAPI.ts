@@ -1,12 +1,13 @@
 import { APIClient } from '@/API/APIClient';
-import { Room } from '@/types/Room';
+import { Comment } from '@/types/Comment';
 
 interface CommentsAPIConstructorParams {
 	apiClient?: APIClient;
 }
 
-interface CreateParams {
+export interface CreateCommentParams {
 	roomId: string;
+	columnId: string;
 	participantId: string;
 	body: string;
 }
@@ -19,12 +20,16 @@ export class CommentsAPI {
 		this.#apiClient = params.apiClient ?? new APIClient();
 	}
 
-	async create ({ roomId, participantId, body }: CreateParams) {
-		const room = await this.#apiClient.post({
-			url: `${this.#url}/${roomId}`,
-			body: { participantId, body },
-		}) as Room;
+	async create ({ roomId, columnId, participantId, body }: CreateCommentParams): Promise<Comment> {
+		const comment = await this.#apiClient.post({
+			url: `/rooms/${roomId}${this.#url}`,
+			body: {
+				columnId,
+				participantId,
+				body,
+			},
+		}) as Comment;
 
-		return room;
+		return comment;
 	}
 }

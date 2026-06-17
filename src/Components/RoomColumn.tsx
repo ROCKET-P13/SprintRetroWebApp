@@ -4,17 +4,20 @@ import { AddCommentBox } from '@/Components/AddCommentBox';
 import { CommentCard } from '@/Components/CommentCard';
 
 interface RoomColumnProps {
+	id: string;
 	title: string;
 	comments?: Array<{
 		id: string;
 		body: string;
-		voteCount: number;
-		createdBy: string
-		createdByName: string;
+		createdBy: string;
+		votes: Array<{
+			id: string;
+			participantName: string;
+		}>;
 	}>;
 }
 
-export const RoomColumn = ({ title, comments = [] }: RoomColumnProps) => {
+export const RoomColumn = ({ id, title, comments = [] }: RoomColumnProps) => {
 	return (
 		<div
 			className="
@@ -75,8 +78,8 @@ export const RoomColumn = ({ title, comments = [] }: RoomColumnProps) => {
 											key={comment.id}
 											id={comment.id}
 											body={comment.body}
-											voteCount={comment.voteCount}
-											createdBy={comment.createdByName}
+											votes={comment.votes}
+											createdBy={comment.createdBy}
 										/>
 									))
 								}
@@ -84,7 +87,7 @@ export const RoomColumn = ({ title, comments = [] }: RoomColumnProps) => {
 						)
 				}
 			</div>
-			<AddCommentBox />
+			<AddCommentBox columnId={id} />
 		</div>
 	);
 };

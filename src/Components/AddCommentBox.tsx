@@ -2,18 +2,33 @@ import { Button } from '@ui/Button';
 import { Send } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-export const AddCommentBox = () => {
+import {  useAddCommentMutation } from '@/hooks/mutations/useAddCommentMutation';
+import { roomStore } from '@/stores/roomStore';
+
+interface AddCommentBoxProps {
+	columnId: string;
+}
+
+export const AddCommentBox = ({ columnId }: AddCommentBoxProps) => {
 	const [newComment, setNewComment] = useState('');
 	const [isFocused, setIsFocused] = useState(false);
 	const composerRef = useRef<HTMLDivElement>(null);
+
+	const session = roomStore((state) => state.session);
+	const addCommentMutation = useAddCommentMutation({
+		roomId: session.roomId,
+		participantId: session.participantId,
+		participantName: session.participantName,
+		columnId,
+	});
+
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (!composerRef.current || composerRef.current.contains(event.target as Node) || newComment.trim()) {
 				return;
 			}
-			// if (composerRef.current && !composerRef.current.contains(event.target as Node) && !newComment.trim()) {
+
 			setIsFocused(false);
-			// }
 		};
 
 		document.addEventListener('mousedown', handleClickOutside);
@@ -26,14 +41,14 @@ export const AddCommentBox = () => {
 		};
 	}, [newComment]);
 
-	const handleSubmit = () => {
-		console.log('submitted comment');
+	const handleSubmit = async () => {
+		await addCommentMutation.mutateAsync({ body: newComment });
+
 		setNewComment('');
 		setIsFocused(false);
 	};
 
 	const handleCancel = () => {
-		console.log('cancelled comment');
 		setNewComment('');
 		setIsFocused(false);
 	};
@@ -66,6 +81,7 @@ export const AddCommentBox = () => {
 						focus:outline-none
 						focus:ring-0
 						focus:border-transparent
+						text-sm
 						${isFocused ? 'h-28' : 'h-10'}
 					`}
 				/>

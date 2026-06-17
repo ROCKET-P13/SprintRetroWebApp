@@ -11,5 +11,6 @@ export const useGetRoom = ({ roomId }: { roomId: string }) => {
 			return await roomsAPI.getById({ roomId });
 		},
 		enabled: !!roomId,
+		placeholderData: (previousData) => previousData,
 	});
 };

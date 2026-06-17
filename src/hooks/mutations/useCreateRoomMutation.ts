@@ -18,8 +18,5 @@ export const useCreateRoomMutation = () => {
 		onError: (error) => {
 			console.log(error);
 		},
-		onSuccess: (room) => {
-			console.log('room created', room);
-		},
 	});
 };

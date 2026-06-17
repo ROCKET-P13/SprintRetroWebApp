@@ -1,15 +1,41 @@
 import { Button } from '@ui/Button';
+import { Icon } from '@ui/Icon';
+import _ from 'lodash';
+import { Heart } from 'lucide-react';
+import { useMemo } from 'react';
+
+import { useAddVoteMutation } from '@/hooks/mutations/useAddVoteMutation';
+import { roomStore } from '@/stores/roomStore';
 
 interface CommentCardProps {
 	id: string;
 	body: string;
-	voteCount: number;
+	votes: Array<{
+		id: string;
+		participantName: string;
+	}>
 	createdBy: string;
 }
 
-export const CommentCard = ({ id, body, voteCount, createdBy }: CommentCardProps) => {
+export const CommentCard = ({ id, body, votes = [], createdBy }: CommentCardProps) => {
+	const session = roomStore((state) => state.session);
+	const participantHasAlreadyVoted = useMemo(
+		() => _.some(votes, (vote) => vote.participantName == session.participantName),
+		[votes, session]
+	);
+
+	const addVoteMutation = useAddVoteMutation({
+		roomId: session.roomId,
+		participantId: session.participantId,
+	});
+	const handleAddVote = async () => {
+		await addVoteMutation.mutateAsync({
+			commentId: id,
+			participantName: session.participantName,
+		});
+	};
 	return (
-		<div className="group rounded-lg border bg-secondary p-3">
+		<div className="group rounded-lg border bg-accent p-3">
 			<p className="text-sm leading-relaxed">
 				{body}
 			</p>
@@ -21,9 +47,16 @@ export const CommentCard = ({ id, body, voteCount, createdBy }: CommentCardProps
 				<Button
 					variant='outline'
 					size='sm'
-					onClick={() => console.log(`voted on comment: ${id}`)}
+					onClick={handleAddVote}
+					disabled={participantHasAlreadyVoted}
+					className={participantHasAlreadyVoted ? 'bg-primary text-white' : ''}
 				>
-					▲ {voteCount}
+					<Icon
+						as={Heart}
+						className='mr-1'
+						fill={participantHasAlreadyVoted ? 'currentColor' : 'none'}
+					/>
+					{votes.length}
 				</Button>
 			</div>
 		</div>

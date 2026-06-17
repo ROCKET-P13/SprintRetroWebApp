@@ -1,30 +1,30 @@
 import { APIClient } from '@/API/APIClient';
-import { Room } from '@/types/Room';
+import { Vote } from '@/types/Vote';
 
 interface VotesAPIConstructorParams {
 	apiClient?: APIClient;
 }
 
-interface CreateParams {
+export interface AddVoteParams {
 	roomId: string;
 	participantId: string;
 	commentId: string;
 }
 
 export class VotesAPI {
-	#url = '/participants';
+	#url = '/votes';
 	#apiClient: APIClient;
 
 	constructor (params: VotesAPIConstructorParams = {}) {
 		this.#apiClient = params.apiClient ?? new APIClient();
 	}
 
-	async create ({ roomId, participantId, commentId }: CreateParams) {
-		const room = await this.#apiClient.post({
-			url: `${this.#url}/${roomId}`,
+	async add ({ roomId, participantId, commentId }: AddVoteParams): Promise<Vote> {
+		const vote = await this.#apiClient.post({
+			url: `/rooms/${roomId}${this.#url}`,
 			body: { participantId, commentId },
-		}) as Room;
+		}) as Vote;
 
-		return room;
+		return vote;
 	}
 }

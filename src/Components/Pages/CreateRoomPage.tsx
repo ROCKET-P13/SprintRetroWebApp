@@ -12,6 +12,7 @@ import { MadSadGladTemplate } from '@/Common/Templates/MadSadGladTemplate';
 import { TemplateCard } from '@/Components/TemplateCard';
 import { useCreateRoomMutation } from '@/hooks/mutations/useCreateRoomMutation';
 import { createRoomStore } from '@/stores/createRoomStore';
+import { roomStore } from '@/stores/roomStore';
 
 const RetroTemplates = Object.freeze([
 	EmptyTemplate,
@@ -31,11 +32,20 @@ export const CreateRoomPage = () => {
 	const isCreateButtonDisabled = useMemo(() => !roomName || !participantName, [roomName, participantName]);
 	const createRoomMutation = useCreateRoomMutation();
 	const roomColumns = createRoomStore((state) => state.columns);
+	const setSession = roomStore((state) => state.setSession);
+	const setRoom = roomStore((state) => state.setRoom);
 	const handleSubmit = async () => {
 		const room = await createRoomMutation.mutateAsync({
 			name: roomName,
 			participantName,
 			columns: roomColumns,
+		});
+
+		setRoom(room);
+		setSession({
+			roomId: room.id,
+			participantId: room.participants[0].id,
+			participantName: room.participants[0].name,
 		});
 
 		navigate({ to: `${Routes.ROOM}/$roomId`, params: { roomId: room.id } });

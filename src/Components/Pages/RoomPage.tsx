@@ -67,6 +67,7 @@ export const RoomPage = () => {
 				{columns.map((column) => (
 					<RoomColumn
 						key={column.id}
+						id={column.id}
 						title={column.title}
 						comments={column.comments}
 					/>
