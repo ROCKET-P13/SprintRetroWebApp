@@ -11,6 +11,11 @@ export interface AddVoteParams {
 	commentId: string;
 }
 
+export interface RemoveVoteParams {
+	roomId: string;
+	voteId: string;
+}
+
 export class VotesAPI {
 	#url = '/votes';
 	#apiClient: APIClient;
@@ -26,5 +31,13 @@ export class VotesAPI {
 		}) as Vote;
 
 		return vote;
+	}
+
+	async remove ({ roomId, voteId }: RemoveVoteParams) {
+		const response = await this.#apiClient.delete({
+			url: `/rooms/${roomId}${this.#url}/${voteId}`,
+		});
+
+		return response;
 	}
 }
