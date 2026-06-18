@@ -14,6 +14,7 @@ interface RoomStore {
 	room: Room;
 	setSession: (data: RoomStoreSession) => void;
 	setRoom: (data: Room) => void;
+	clearSession: () => void;
 }
 
 export const roomStore = create<RoomStore>()(
@@ -42,6 +43,22 @@ export const roomStore = create<RoomStore>()(
 			setRoom: (data: Room) => {
 				set({
 					room: data,
+				});
+			},
+			clearSession: () => {
+				set({
+					session: {
+						roomId: '',
+						participantId: '',
+						participantName: '',
+					},
+
+					room: {
+						id: '',
+						name: '',
+						columns: [],
+						participants: [],
+					},
 				});
 			},
 		}),

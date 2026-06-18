@@ -1,8 +1,10 @@
 import { useParams } from '@tanstack/react-router';
+import { useEffect } from 'react';
 
 import { RoomColumn } from '@/Components/RoomColumn';
 import { useGetRoom } from '@/hooks/queries/useGetRoom';
 import { roomStore } from '@/stores/roomStore';
+import { roomWebSocketClient } from '@/WebSocket/RoomWebSocketClient';
 
 export const RoomPage = () => {
 	const { roomId } = useParams({
@@ -16,6 +18,18 @@ export const RoomPage = () => {
 	} = useGetRoom({ roomId });
 
 	const setRoom = roomStore((state) => state.setRoom);
+	const session = roomStore((state) => state.session);
+
+	useEffect(() => {
+		if (!session.roomId || !session.participantId) {
+			return;
+		}
+
+		roomWebSocketClient.join({
+			roomId: session.roomId,
+			participantId: session.participantId,
+		});
+	}, [session.roomId, session.participantId]);
 
 	if (isLoading) {
 		return (

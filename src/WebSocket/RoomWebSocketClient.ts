@@ -20,7 +20,7 @@ class RoomWebSocketClient {
 		this.#webSocketClient.connect();
 	}
 
-	async join ({ roomId, participantId }: JoinRoomParams): Promise<Room> {
+	async join ({ roomId, participantId }: JoinRoomParams) {
 		return await this.#webSocketClient.send(
 			WebSocketRequestTypes.JOIN_ROOM,
 			{
