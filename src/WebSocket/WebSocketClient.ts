@@ -48,8 +48,6 @@ export class WebSocketClient {
 		this.socket.onmessage = (event) => {
 			const data = JSON.parse(event.data);
 
-			console.log({ data });
-
 			if (data.type === 'RESPONSE' && data.requestId) {
 				const pending = this.pendingRequests.get(data.requestId);
 
@@ -108,7 +106,6 @@ export class WebSocketClient {
 
 			this.pendingRequests.set(requestId, {
 				resolve: (response) => {
-					console.log({ response });
 					clearTimeout(timeout);
 
 					if (response.success) {
