@@ -19,5 +19,6 @@ export interface Room {
 	participants: Array<{
 		id: string;
 		name: string;
+		isRoomAdmin: boolean;
 	}>
 }

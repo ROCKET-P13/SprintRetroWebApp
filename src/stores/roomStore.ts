@@ -7,6 +7,7 @@ type RoomStoreSession = {
 	roomId: string;
 	participantId: string;
 	participantName: string
+	isRoomAdmin: boolean;
 }
 
 interface RoomStore {
@@ -24,6 +25,7 @@ export const roomStore = create<RoomStore>()(
 				roomId: '',
 				participantId: '',
 				participantName: '',
+				isRoomAdmin: false,
 			},
 			room: {
 				id: '',
@@ -37,6 +39,7 @@ export const roomStore = create<RoomStore>()(
 						roomId: data.roomId,
 						participantId: data.participantId,
 						participantName: data.participantName,
+						isRoomAdmin: data.isRoomAdmin,
 					},
 				});
 			},
@@ -51,6 +54,7 @@ export const roomStore = create<RoomStore>()(
 						roomId: '',
 						participantId: '',
 						participantName: '',
+						isRoomAdmin: false,
 					},
 
 					room: {
