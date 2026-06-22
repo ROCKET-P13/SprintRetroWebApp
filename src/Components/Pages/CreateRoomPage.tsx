@@ -46,7 +46,6 @@ export const CreateRoomPage = () => {
 			roomId: room.id,
 			participantId: room.participants[0].id,
 			participantName: room.participants[0].name,
-			isRoomAdmin: room.participants[0].isRoomAdmin,
 		});
 
 		navigate({ to: `${Routes.ROOM}/$roomId`, params: { roomId: room.id } });

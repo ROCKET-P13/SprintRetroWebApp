@@ -1,6 +1,7 @@
 import { useParams } from '@tanstack/react-router';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
+import { AddColumnCard } from '@/Components/AddColumnCard';
 import { RoomColumn } from '@/Components/RoomColumn';
 import { useGetRoom } from '@/hooks/queries/useGetRoom';
 import { roomStore } from '@/stores/roomStore';
@@ -19,6 +20,7 @@ export const RoomPage = () => {
 
 	const setRoom = roomStore((state) => state.setRoom);
 	const session = roomStore((state) => state.session);
+	const isRoomAdmin = useMemo(() => room?.createdBy === session.participantId, [room, session]);
 
 	useEffect(() => {
 		if (!session.roomId || !session.participantId) {
@@ -50,11 +52,10 @@ export const RoomPage = () => {
 			</div>
 		);
 	}
+
 	setRoom(room);
 
-	const columns = [...(room.columns ?? [])].sort(
-		(a, b) => a.position - b.position
-	);
+	const columns = room.columns.sort((a, b) => a.position - b.position);
 
 	return (
 		<div className="flex h-full flex-col bg-muted/30">
@@ -78,16 +79,22 @@ export const RoomPage = () => {
 				md:grid-cols-2
 				lg:grid-cols-4
 			">
-				{columns.map((column) => (
-					<RoomColumn
-						key={column.id}
-						id={column.id}
-						title={column.title}
-						comments={column.comments}
-					/>
-				))}
+				{
+					columns.map((column) => (
+						<RoomColumn
+							key={column.id}
+							id={column.id}
+							title={column.title}
+							comments={column.comments}
+						/>
+					))
+				}
+				{
+					isRoomAdmin && (
+						<AddColumnCard />
+					)
+				}
 			</div>
-
 		</div>
 	);
 };

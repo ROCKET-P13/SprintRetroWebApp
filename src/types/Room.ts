@@ -1,6 +1,7 @@
 export interface Room {
 	id: string;
 	name: string;
+	createdBy: string;
 	columns: Array<{
 		id: string;
 		title: string;
@@ -19,6 +20,5 @@ export interface Room {
 	participants: Array<{
 		id: string;
 		name: string;
-		isRoomAdmin: boolean;
 	}>
 }
