@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-import { CreatedVote, VotesAPI } from '@/API/VotesAPI';
+import { CreateVoteResponse, VotesAPI } from '@/API/VotesAPI';
 import { Room } from '@/types/Room';
 
 interface UseAddVoteMutationProps {
@@ -27,9 +27,9 @@ export const useAddVoteMutation = (
 ) => {
 	const queryClient = useQueryClient();
 
-	const votesAPI = useMemo(() => new VotesAPI(), []);
+	const votesAPI = useMemo(() => new VotesAPI({ roomId }), [roomId]);
 
-	return useMutation<CreatedVote, Error, NewVote, MutationContext>({
+	return useMutation<CreateVoteResponse, Error, NewVote, MutationContext>({
 		mutationFn: async (params) => {
 			return await votesAPI.add({
 				roomId,
@@ -100,7 +100,7 @@ export const useAddVoteMutation = (
 			);
 		},
 		onSuccess: (
-			createdVote,
+			CreateVoteResponse,
 			_,
 			context
 		) => {
@@ -117,7 +117,7 @@ export const useAddVoteMutation = (
 							return {
 								...column,
 								comments: column.comments.map((comment) => {
-									if (comment.id !== createdVote.columnId) {
+									if (comment.id !== CreateVoteResponse.columnId) {
 										return comment;
 									}
 
@@ -125,7 +125,7 @@ export const useAddVoteMutation = (
 										...comment,
 										votes: comment.votes.map((vote) => {
 											return vote.id === context?.temporaryId
-												? createdVote
+												? CreateVoteResponse
 												: vote;
 										}),
 									};

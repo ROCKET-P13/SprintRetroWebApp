@@ -25,7 +25,7 @@ export const useRemoveVoteMutation = (
 ) => {
 	const queryClient = useQueryClient();
 
-	const votesAPI = useMemo(() => new VotesAPI(), []);
+	const votesAPI = useMemo(() => new VotesAPI({ roomId }), [roomId]);
 
 	return useMutation<object, Error, UseRemoveVoteMutationParams, MutationContext>({
 		mutationFn: async (params) => {

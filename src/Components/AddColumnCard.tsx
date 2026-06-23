@@ -4,17 +4,23 @@ import _ from 'lodash';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 
+import { useAddColumnMutation } from '@/hooks/mutations/useAddColumnMutation';
+import { roomStore } from '@/stores/roomStore';
+
 export const AddColumnCard = () => {
 	const [adding, setAdding] = useState(false);
 	const [title, setTitle] = useState('');
+	const session = roomStore((state) => state.session);
+	const addColumnMutation = useAddColumnMutation({ roomId: session.roomId });
 
 	const handleSubmit = async () => {
-		if (!title.trim()) {
+		if (!title) {
 			return;
 		}
-
 		setTitle('');
 		setAdding(false);
+
+		await addColumnMutation.mutateAsync({ title: title });
 	};
 
 	if (!adding) {
@@ -67,7 +73,7 @@ export const AddColumnCard = () => {
 				</Button>
 				<Button
 					className="flex-1"
-					disabled={_.isEmpty(title.trim())}
+					disabled={_.isEmpty(title)}
 					onClick={handleSubmit}
 				>
 					Create

@@ -31,7 +31,7 @@ export const useAddCommentMutation = (
 ) => {
 	const queryClient = useQueryClient();
 
-	const commentsAPI = useMemo(() => new CommentsAPI(), []);
+	const commentsAPI = useMemo(() => new CommentsAPI({ roomId }), [roomId]);
 
 	return useMutation<Comment, Error, NewComment, MutationContext>({
 		mutationFn: async ({ body }) => {

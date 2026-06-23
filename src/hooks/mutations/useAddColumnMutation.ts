@@ -1,8 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-import { ColumnsAPI } from '@/API/ColumnsAPI';
-import { Column } from '@/types/Column';
+import { ColumnsAPI, CreateColumnReponse } from '@/API/ColumnsAPI';
 import { Room } from '@/types/Room';
 
 interface UseAddColumnMutationProps {
@@ -25,7 +24,7 @@ export const useAddColumnMutation = ({ roomId }: UseAddColumnMutationProps) => {
 
 	const columnsAPI = useMemo(() => new ColumnsAPI({ roomId }), [roomId]);
 
-	return useMutation<Column, Error, NewColumn, MutationContext>({
+	return useMutation<CreateColumnReponse, Error, NewColumn, MutationContext>({
 		mutationFn: async ({ title }) => {
 			return await columnsAPI.create({ title });
 		},
@@ -87,7 +86,16 @@ export const useAddColumnMutation = ({ roomId }: UseAddColumnMutationProps) => {
 
 					return {
 						...room,
-						columns: room.columns.map((column) => column.id === context.temporaryId ? createdColumn : column),
+						columns: room.columns.map((column) => {
+							if (column.id !== context.temporaryId) {
+								return column;
+							}
+
+							return {
+								...createdColumn,
+								comments: [],
+							};
+						}),
 					};
 				}
 			);

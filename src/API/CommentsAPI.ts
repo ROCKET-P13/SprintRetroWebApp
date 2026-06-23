@@ -3,6 +3,7 @@ import { Comment } from '@/types/Comment';
 
 interface CommentsAPIConstructorParams {
 	apiClient?: APIClient;
+	roomId: string;
 }
 
 export interface CreateCommentParams {
@@ -15,14 +16,16 @@ export interface CreateCommentParams {
 export class CommentsAPI {
 	#url = '/comments';
 	#apiClient: APIClient;
+	#roomId:  string;
 
-	constructor (params: CommentsAPIConstructorParams = {}) {
+	constructor (params: CommentsAPIConstructorParams) {
 		this.#apiClient = params.apiClient ?? new APIClient();
+		this.#roomId = params.roomId;
 	}
 
-	async create ({ roomId, columnId, participantId, body }: CreateCommentParams): Promise<Comment> {
+	async create ({ columnId, participantId, body }: CreateCommentParams): Promise<Comment> {
 		const comment = await this.#apiClient.post({
-			url: `/rooms/${roomId}${this.#url}`,
+			url: `/rooms/${this.#roomId}${this.#url}`,
 			body: {
 				columnId,
 				participantId,
