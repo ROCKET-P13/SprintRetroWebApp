@@ -1,9 +1,9 @@
+import { Vote } from '@/types/Vote';
+
 export interface Comment {
 	id: string;
-	createdBy: string;
 	body: string;
-	votes: Array<{
-		id: string;
-		participantName: string;
-	}>
+	voteCount?: number;
+	createdBy: string;
+	votes: Vote[]
 }

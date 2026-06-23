@@ -33,6 +33,7 @@ export const RoomPage = () => {
 		});
 	}, [session.roomId, session.participantId]);
 
+	console.log({ room });
 	if (isLoading) {
 		return (
 			<div className="flex h-full items-center justify-center">

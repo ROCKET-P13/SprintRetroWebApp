@@ -1,5 +1,4 @@
 import { APIClient } from '@/API/APIClient';
-import { Vote } from '@/types/Vote';
 
 interface VotesAPIConstructorParams {
 	apiClient?: APIClient;
@@ -16,6 +15,13 @@ export interface RemoveVoteParams {
 	voteId: string;
 }
 
+export interface CreatedVote {
+	id: string;
+	columnId: string;
+	commentId: string;
+	participantName: string;
+}
+
 export class VotesAPI {
 	#url = '/votes';
 	#apiClient: APIClient;
@@ -24,11 +30,11 @@ export class VotesAPI {
 		this.#apiClient = params.apiClient ?? new APIClient();
 	}
 
-	async add ({ roomId, participantId, commentId }: AddVoteParams): Promise<Vote> {
+	async add ({ roomId, participantId, commentId }: AddVoteParams): Promise<CreatedVote> {
 		const vote = await this.#apiClient.post({
 			url: `/rooms/${roomId}${this.#url}`,
 			body: { participantId, commentId },
-		}) as Vote;
+		}) as CreatedVote;
 
 		return vote;
 	}

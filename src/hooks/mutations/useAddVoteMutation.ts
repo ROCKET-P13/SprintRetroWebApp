@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-import { VotesAPI } from '@/API/VotesAPI';
+import { CreatedVote, VotesAPI } from '@/API/VotesAPI';
 import { Room } from '@/types/Room';
-import { Vote } from '@/types/Vote';
 
 interface UseAddVoteMutationProps {
 	roomId: string;
@@ -30,7 +29,7 @@ export const useAddVoteMutation = (
 
 	const votesAPI = useMemo(() => new VotesAPI(), []);
 
-	return useMutation<Vote, Error, NewVote, MutationContext>({
+	return useMutation<CreatedVote, Error, NewVote, MutationContext>({
 		mutationFn: async (params) => {
 			return await votesAPI.add({
 				roomId,
@@ -125,7 +124,7 @@ export const useAddVoteMutation = (
 									return {
 										...comment,
 										votes: comment.votes.map((vote) => {
-											return vote.id === context.temporaryId
+											return vote.id === context?.temporaryId
 												? createdVote
 												: vote;
 										}),

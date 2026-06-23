@@ -125,7 +125,7 @@ export const useAddCommentMutation = (
 								...column,
 								comments: column.comments.map(
 									(comment) =>
-										comment.id === context.temporaryId
+										comment.id === context?.temporaryId
 											? createdComment
 											: comment
 								),

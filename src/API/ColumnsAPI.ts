@@ -1,29 +1,31 @@
 import { APIClient } from '@/API/APIClient';
-import { Room } from '@/types/Room';
+import { Column } from '@/types/Column';
 
 interface ColumnsAPIConstructorParams {
 	apiClient?: APIClient;
+	roomId?: string;
 }
 
 interface CreateParams {
-	roomId: string;
 	title: string;
 }
 
 export class ColumnsAPI {
 	#url = '/columns';
 	#apiClient: APIClient;
+	#roomId: undefined|string;
 
 	constructor (params: ColumnsAPIConstructorParams = {}) {
 		this.#apiClient = params.apiClient ?? new APIClient();
+		this.#roomId = params.roomId;
 	}
 
-	async create ({ roomId, title }: CreateParams): Promise<Room> {
-		const room = await this.#apiClient.post({
-			url: `${this.#url}/${roomId}`,
+	async create ({ title }: CreateParams): Promise<Column> {
+		const column = await this.#apiClient.post({
+			url: `${this.#url}/${this.#roomId}`,
 			body: { title },
-		}) as Room;
+		}) as Column;
 
-		return room;
+		return column;
 	}
 }
