@@ -19,7 +19,7 @@ interface RoomStore {
 
 export const roomStore = create<RoomStore>()(
 	persist(
-		(set) => ({
+		(set, get) => ({
 			session: {
 				roomId: '',
 				participantId: '',
