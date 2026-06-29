@@ -1,6 +1,8 @@
+import _ from 'lodash';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+import { Column } from '@/types/Column';
 import { Room } from '@/types/Room';
 
 type RoomStoreSession = {
@@ -15,6 +17,7 @@ interface RoomStore {
 	setSession: (data: RoomStoreSession) => void;
 	setRoom: (data: Room) => void;
 	clearSession: () => void;
+	setRoomColumns: (data: Column[]) => void;
 }
 
 export const roomStore = create<RoomStore>()(
@@ -45,6 +48,9 @@ export const roomStore = create<RoomStore>()(
 				set({
 					room: data,
 				});
+			},
+			setRoomColumns: (data: Column[]) => {
+				_.assign(get().room, { columns: data });
 			},
 			clearSession: () => {
 				set({

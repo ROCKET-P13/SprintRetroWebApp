@@ -1,6 +1,8 @@
 import {
 	DndContext,
 	DragEndEvent,
+	DragOverlay,
+	DragStartEvent,
 	PointerSensor,
 	useSensor,
 	useSensors
@@ -13,11 +15,13 @@ import {
 import { useParams } from '@tanstack/react-router';
 import { Button } from '@ui/Button';
 import { Icon } from '@ui/Icon';
+import _ from 'lodash';
 import { Plus } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import { AddColumnCard } from '@/Components/AddColumnCard';
 import { RoomColumn } from '@/Components/RoomColumn';
+import { SortableRoomColumn } from '@/Components/SortableRoomColumn';
 import { useGetRoom } from '@/hooks/queries/useGetRoom';
 import { addColumnStore } from '@/stores/addColumnStore';
 import { roomStore } from '@/stores/roomStore';
@@ -30,46 +34,30 @@ export const RoomPage = () => {
 	});
 
 	const {
-		data: room,
+		data,
 		isLoading,
 		error,
 	} = useGetRoom({ roomId });
 
-	const isAddingColumn = addColumnStore(
-		(state) => state.isAddingColumn
-	);
-
-	const toggleIsAddingColumn = addColumnStore(
-		(state) => state.toggleIsAddingColumn
-	);
-
-	const setRoom = roomStore(
-		(state) => state.setRoom
-	);
-
-	const session = roomStore(
-		(state) => state.session
-	);
-
-	const isRoomAdmin = useMemo(
-		() => room?.createdBy === session.participantId,
-		[room, session]
-	);
-
-	const [columns, setColumns] = useState<Column[]>([]);
-
+	const setRoom = roomStore((state) => state.setRoom);
 	useEffect(() => {
-		if (!room) {
+		if (!data) {
 			return;
 		}
 
-		// eslint-disable-next-line react-hooks/set-state-in-effect
-		setColumns(
-			[...room.columns].sort(
-				(a, b) => a.position - b.position
-			)
-		);
-	}, [room]);
+		setRoom(data);
+	}, [data, setRoom]);
+
+	const room = roomStore((state) => state.room);
+	const setRoomColumns = roomStore((state) => state.setRoomColumns);
+	const isAddingColumn = addColumnStore((state) => state.isAddingColumn);
+	const toggleIsAddingColumn = addColumnStore((state) => state.toggleIsAddingColumn);
+	const session = roomStore((state) => state.session);
+
+	const isRoomAdmin = useMemo(() => room?.createdBy === session.participantId, [room, session]);
+	const [activeColumn, setActiveColumn] = useState<Column | null>(null);
+
+	const columns = room.columns;
 
 	useEffect(() => {
 		if (!session.roomId || !session.participantId) {
@@ -80,10 +68,7 @@ export const RoomPage = () => {
 			roomId: session.roomId,
 			participantId: session.participantId,
 		});
-	}, [
-		session.roomId,
-		session.participantId,
-	]);
+	}, [session.roomId, session.participantId]);
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {
@@ -92,45 +77,6 @@ export const RoomPage = () => {
 			},
 		})
 	);
-
-	const handleDragEnd = (
-		event: DragEndEvent
-	) => {
-		const { active, over } = event;
-
-		if (!over || active.id === over.id) {
-			return;
-		}
-
-		setColumns((currentColumns) => {
-			const oldIndex = currentColumns.findIndex(
-				(column) => column.id === active.id
-			);
-
-			const newIndex = currentColumns.findIndex(
-				(column) => column.id === over.id
-			);
-
-			const reorderedColumns = arrayMove(
-				currentColumns,
-				oldIndex,
-				newIndex
-			);
-
-			// TODO:
-			// Send updated positions to backend/websocket
-			//
-			// roomWebSocketClient.reorderColumns({
-			// 	roomId,
-			// 	columns: reorderedColumns.map((column, index) => ({
-			// 		columnId: column.id,
-			// 		position: index,
-			// 	})),
-			// });
-
-			return reorderedColumns;
-		});
-	};
 
 	if (isLoading) {
 		return (
@@ -152,10 +98,36 @@ export const RoomPage = () => {
 		);
 	}
 
-	setRoom(room);
+	const handleDragStart = (event: DragStartEvent) => {
+		const column = _.find(columns, (column) => column.id === event.active.id);
+		if (!column) {
+			return;
+		}
+
+		setActiveColumn(column);
+	};
+
+	console.log({ room });
+
+	const handleDragEnd = (event: DragEndEvent) => {
+		const { active, over } = event;
+
+		setActiveColumn(null);
+
+		if (!over || active.id === over.id) {
+			return;
+		}
+
+		const oldIndex = columns.findIndex((column) => column.id === active.id);
+		const newIndex = columns.findIndex((column) => column.id === over.id);
+
+		const reordered = arrayMove(columns, oldIndex, newIndex);
+		setRoomColumns(reordered);
+		// TODO: Persist reordered positions to backend.
+	};
 
 	return (
-		<div className="flex h-full flex-col bg-muted/30">
+		<div className="flex h-full flex-col bg-muted/30 overflow-x-hidden">
 			<div className="border-b bg-background">
 				<div className="flex flex-row justify-between gap-1 px-6 py-4">
 					<div>
@@ -187,7 +159,9 @@ export const RoomPage = () => {
 
 			<DndContext
 				sensors={sensors}
+				onDragStart={handleDragStart}
 				onDragEnd={handleDragEnd}
+				onDragCancel={() => setActiveColumn(null)}
 			>
 				<SortableContext
 					items={columns.map(
@@ -201,7 +175,6 @@ export const RoomPage = () => {
 							gap-6
 							p-6
 							auto-rows-fr
-							overflow-x-hidden
 						"
 						style={{
 							gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
@@ -215,8 +188,8 @@ export const RoomPage = () => {
 						}
 
 						{
-							columns.map((column) => (
-								<RoomColumn
+							_.map(columns, (column) => (
+								<SortableRoomColumn
 									key={column.id}
 									id={column.id}
 									title={column.title}
@@ -226,6 +199,18 @@ export const RoomPage = () => {
 						}
 					</div>
 				</SortableContext>
+
+				<DragOverlay>
+					{
+						activeColumn && (
+							<RoomColumn
+								id={activeColumn.id}
+								title={activeColumn.title}
+								comments={activeColumn.comments}
+							/>
+						)
+					}
+				</DragOverlay>
 			</DndContext>
 		</div>
 	);

@@ -1,5 +1,3 @@
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { Icon } from '@ui/Icon';
 import {
 	GripVertical,
@@ -9,7 +7,7 @@ import {
 import { AddCommentBox } from '@/Components/AddCommentBox';
 import { CommentCard } from '@/Components/CommentCard';
 
-interface RoomColumnProps {
+export interface RoomColumnProps {
 	id: string;
 	title: string;
 	comments?: Array<{
@@ -21,34 +19,19 @@ interface RoomColumnProps {
 			participantName: string;
 		}>;
 	}>;
+
+	dragHandleProps?: React.HTMLAttributes<HTMLDivElement>;
 }
 
 export const RoomColumn = ({
 	id,
 	title,
 	comments = [],
+	dragHandleProps,
 }: RoomColumnProps) => {
-	const {
-		attributes,
-		listeners,
-		setNodeRef,
-		transform,
-		transition,
-	} = useSortable({
-		id,
-	});
-
-	const style = {
-		transform:
-			CSS.Transform.toString(transform),
-		transition,
-	};
-
 	return (
 		<div
-			ref={setNodeRef}
-			style={style}
-			className={`
+			className="
 				flex
 				h-125
 				w-full
@@ -57,14 +40,13 @@ export const RoomColumn = ({
 				border
 				bg-card
 				shadow-sm
-			`}
+			"
 		>
 			<div className="border-b px-4 py-3">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
 						<div
-							{...attributes}
-							{...listeners}
+							{...dragHandleProps}
 							className="
 								cursor-grab
 								active:cursor-grabbing
@@ -98,42 +80,33 @@ export const RoomColumn = ({
 
 			<div className="flex-1 overflow-y-auto p-4">
 				{
-					comments.length === 0
-						? (
-							<div className="flex h-full items-center justify-center">
-								<div className="text-center">
-									<MessageSquare
-										className="
-											mx-auto
-											mb-2
-											size-8
-											text-muted-foreground
-										"
-									/>
+					comments.length === 0 ? (
+						<div className="flex h-full items-center justify-center">
+							<div className="text-center">
+								<MessageSquare
+									className="mx-auto mb-2 size-8 text-muted-foreground"
+								/>
 
-									<p className="text-sm text-muted-foreground">
-										No comments yet
-									</p>
-								</div>
+								<p className="text-sm text-muted-foreground">
+									No comments yet
+								</p>
 							</div>
-						)
-						: (
-							<div className="flex flex-col gap-3">
-								{
-									comments.map(
-										(comment) => (
-											<CommentCard
-												key={comment.id}
-												id={comment.id}
-												body={comment.body}
-												votes={comment.votes}
-												createdBy={comment.createdBy}
-											/>
-										)
-									)
-								}
-							</div>
-						)
+						</div>
+					) : (
+						<div className="flex flex-col gap-3">
+							{
+								comments.map((comment) => (
+									<CommentCard
+										key={comment.id}
+										id={comment.id}
+										body={comment.body}
+										votes={comment.votes}
+										createdBy={comment.createdBy}
+									/>
+								))
+							}
+						</div>
+					)
 				}
 			</div>
 
