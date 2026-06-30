@@ -107,8 +107,6 @@ export const RoomPage = () => {
 		setActiveColumn(column);
 	};
 
-	console.log({ room });
-
 	const handleDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event;
 
