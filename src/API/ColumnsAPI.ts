@@ -9,10 +9,25 @@ interface CreateParams {
 	title: string;
 }
 
+export interface UpdateParams {
+	columns: Array<{
+		id: string;
+		position: number;
+	}>
+}
+
 export interface CreateColumnReponse {
 	id: string;
 	title: string;
 	position: number;
+}
+
+export interface UpdateColumnsResponse {
+	columns: Array<{
+		id: string;
+		title: string;
+		position: number;
+	}>
 }
 
 export class ColumnsAPI {
@@ -26,12 +41,16 @@ export class ColumnsAPI {
 	}
 
 	async create ({ title }: CreateParams): Promise<CreateColumnReponse> {
-		console.log({ url: `${this.#url}/${this.#roomId}` });
-		const column = await this.#apiClient.post({
+		return await this.#apiClient.post({
 			url: `/rooms/${this.#roomId}${this.#url}`,
 			body: { title },
 		}) as CreateColumnReponse;
+	}
 
-		return column;
+	async update ({ columns }: UpdateParams): Promise<UpdateColumnsResponse> {
+		return await this.#apiClient.patch({
+			url: `/rooms/${this.#roomId}${this.#url}`,
+			body: { columns },
+		}) as UpdateColumnsResponse;
 	}
 }

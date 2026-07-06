@@ -22,6 +22,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { AddColumnCard } from '@/Components/AddColumnCard';
 import { RoomColumn } from '@/Components/RoomColumn';
 import { SortableRoomColumn } from '@/Components/SortableRoomColumn';
+import { useUpdateColumnPositionsMutation } from '@/hooks/mutations/useUpdateColumnPositionsMutation';
 import { useGetRoom } from '@/hooks/queries/useGetRoom';
 import { addColumnStore } from '@/stores/addColumnStore';
 import { roomStore } from '@/stores/roomStore';
@@ -56,7 +57,7 @@ export const RoomPage = () => {
 
 	const isRoomAdmin = useMemo(() => room?.createdBy === session.participantId, [room, session]);
 	const [activeColumn, setActiveColumn] = useState<Column | null>(null);
-
+	const updateColumnPositionsMutation = useUpdateColumnPositionsMutation({ roomId });
 	const columns = room.columns;
 
 	useEffect(() => {
@@ -107,7 +108,7 @@ export const RoomPage = () => {
 		setActiveColumn(column);
 	};
 
-	const handleDragEnd = (event: DragEndEvent) => {
+	const handleDragEnd = async (event: DragEndEvent) => {
 		const { active, over } = event;
 
 		setActiveColumn(null);
@@ -121,7 +122,21 @@ export const RoomPage = () => {
 
 		const reordered = arrayMove(columns, oldIndex, newIndex);
 		setRoomColumns(reordered);
-		// TODO: Persist reordered positions to backend.
+
+		await updateColumnPositionsMutation.mutateAsync({
+			columns: _.reduce(reordered, (result: Array<{ id: string; position: number; }>, column, index) => {
+				if (column.position === index + 1) {
+					return result;
+				}
+
+				result.push({
+					id: column.id,
+					position: index + 1,
+				});
+
+				return result;
+			}, []),
+		});
 	};
 
 	return (
