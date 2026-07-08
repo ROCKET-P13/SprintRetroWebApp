@@ -33,9 +33,8 @@ export const RoomColumn = ({
 		<div
 			className="
 				flex
-				h-full
-				min-w-full
 				flex-col
+				self-start
 				rounded-xl
 				border
 				bg-card
@@ -81,10 +80,10 @@ export const RoomColumn = ({
 			<div className="flex-1 overflow-y-auto p-4">
 				{
 					comments.length === 0 ? (
-						<div className="flex h-full items-center justify-center">
+						<div className="flex p-10 items-center justify-center">
 							<div className="text-center">
 								<MessageSquare
-									className="mx-auto mb-2 size-8 text-muted-foreground"
+									className="mx-auto mb-2 size-6 text-muted-foreground"
 								/>
 
 								<p className="text-sm text-muted-foreground">

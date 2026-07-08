@@ -188,10 +188,10 @@ export const RoomPage = () => {
 							gap-6
 							p-6
 							auto-rows-fr
+							grid-cols-[repeat(auto-fit,minmax(300px,1fr))]
+							transition-all
+							duration-300
 						"
-						style={{
-							gridTemplateColumns: `repeat(${columns.length}, minmax(0, 1fr))`,
-						}}
 					>
 						{
 							isRoomAdmin
