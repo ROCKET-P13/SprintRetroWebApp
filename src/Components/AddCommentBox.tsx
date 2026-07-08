@@ -61,14 +61,14 @@ export const AddCommentBox = ({ columnId }: AddCommentBoxProps) => {
 						rounded-lg
 						border
 						bg-background
-						p-3
+						p-2
 					"
 			>
 				<textarea
 					value={newComment}
 					onChange={(e) => setNewComment(e.target.value)}
 					onFocus={() => setIsFocused(true)}
-					placeholder="Write your comment..."
+					placeholder="Add comment..."
 					className={`
 						w-full
 						resize-none
@@ -82,7 +82,7 @@ export const AddCommentBox = ({ columnId }: AddCommentBoxProps) => {
 						focus:ring-0
 						focus:border-transparent
 						text-sm
-						${isFocused ? 'h-28' : 'h-10'}
+						${isFocused ? 'h-28' : 'h-12'}
 					`}
 				/>
 				{

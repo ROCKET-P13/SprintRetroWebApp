@@ -33,8 +33,8 @@ export const RoomColumn = ({
 		<div
 			className="
 				flex
-				h-125
-				w-full
+				h-full
+				min-w-full
 				flex-col
 				rounded-xl
 				border

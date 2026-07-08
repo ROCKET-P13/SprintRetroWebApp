@@ -50,7 +50,7 @@ export const CommentCard = ({ id, body, votes = [], createdBy }: CommentCardProp
 
 	return (
 		<div className="group rounded-lg border bg-accent p-3">
-			<p className="text-sm leading-relaxed">
+			<p className="text-sm leading-relaxed wrap-break-word">
 				{body}
 			</p>
 
