@@ -5,7 +5,7 @@ interface ColumnToDelete {
 	title: string;
 }
 
-interface DeleteColumnStore {
+interface RemoveColumnStore {
 	isOpen: boolean;
 	columnToDelete: ColumnToDelete;
 	openDialog: () => void;
@@ -14,7 +14,7 @@ interface DeleteColumnStore {
 	setColumnToDelete: (event: ColumnToDelete) => void;
 }
 
-export const deleteColumnStore = create<DeleteColumnStore>((set) => ({
+export const removeColumnStore = create<RemoveColumnStore>((set) => ({
 	isOpen: false,
 	columnToDelete: {
 		id: '',

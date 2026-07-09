@@ -26,6 +26,7 @@ export const useRemoveVoteMutation = (
 	const queryClient = useQueryClient();
 
 	const votesAPI = useMemo(() => new VotesAPI({ roomId }), [roomId]);
+	const queryKey = ['room', roomId];
 
 	return useMutation<object, Error, UseRemoveVoteMutationParams, MutationContext>({
 		mutationFn: async (params) => {
@@ -35,8 +36,6 @@ export const useRemoveVoteMutation = (
 			});
 		},
 		onMutate: async ({ commentId, voteId }) => {
-			const queryKey = ['room', roomId];
-
 			await queryClient.cancelQueries({ queryKey });
 
 			const previousRoomState = queryClient.getQueryData<Room>(queryKey);
@@ -83,7 +82,7 @@ export const useRemoveVoteMutation = (
 			}
 
 			queryClient.setQueryData(
-				['room', roomId],
+				queryKey,
 				context.previousRoomState
 			);
 		},

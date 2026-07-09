@@ -228,7 +228,11 @@ export const RoomPage = () => {
 				</DragOverlay>
 			</DndContext>
 
-			<DeleteColumnDialog />
+			{
+				isRoomAdmin && (
+					<DeleteColumnDialog />
+				)
+			}
 		</div>
 	);
 };

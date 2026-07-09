@@ -31,26 +31,33 @@ export interface UpdateColumnsResponse {
 }
 
 export class ColumnsAPI {
-	#url = '/columns';
+	#url: string;
 	#apiClient: APIClient;
 	#roomId: string;
 
 	constructor (params: ColumnsAPIConstructorParams) {
 		this.#apiClient = params.apiClient ?? new APIClient();
 		this.#roomId = params.roomId;
+		this.#url = `/rooms/${this.#roomId}/columns`;
 	}
 
 	async create ({ title }: CreateParams): Promise<CreateColumnReponse> {
 		return await this.#apiClient.post({
-			url: `/rooms/${this.#roomId}${this.#url}`,
+			url: this.#url,
 			body: { title },
 		}) as CreateColumnReponse;
 	}
 
 	async update ({ columns }: UpdateParams): Promise<UpdateColumnsResponse> {
 		return await this.#apiClient.patch({
-			url: `/rooms/${this.#roomId}${this.#url}`,
+			url: this.#url,
 			body: { columns },
 		}) as UpdateColumnsResponse;
+	}
+
+	async remove ({ columnId }: { columnId: string }): Promise<object> {
+		return await this.#apiClient.delete({
+			url: `${this.#url}/${columnId}`,
+		});
 	}
 }

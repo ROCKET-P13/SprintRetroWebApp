@@ -1,17 +1,23 @@
 import { Button } from '@ui/Button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@ui/Dialog';
 
-import { deleteColumnStore } from '@/stores/deleteColumnStore';
+import { useRemoveColumnMutation } from '@/hooks/mutations/useRemoveColumnMutation';
+import { removeColumnStore } from '@/stores/removeColumnStore';
+import { roomStore } from '@/stores/roomStore';
 
 export const DeleteColumnDialog = () => {
-	const closeDialog = deleteColumnStore((state) => state.closeDialog);
-	const clearDialog = deleteColumnStore((state) => state.clearDialog);
-	const isOpen = deleteColumnStore((state) => state.isOpen);
-	const columnToDelete = deleteColumnStore((state) => state.columnToDelete);
+	const closeDialog = removeColumnStore((state) => state.closeDialog);
+	const clearDialog = removeColumnStore((state) => state.clearDialog);
+	const isOpen = removeColumnStore((state) => state.isOpen);
+	const columnToDelete = removeColumnStore((state) => state.columnToDelete);
+	const session = roomStore((state) => state.session);
 
-	const handleSubmit = () => {
+	const removeColumnMutation = useRemoveColumnMutation({ roomId: session.roomId });
+
+	const handleSubmit = async () => {
 		closeDialog();
-		console.log({ columnToDelete });
+		await removeColumnMutation.mutateAsync({ columnId: columnToDelete.id });
+		// console.log({ columnToDelete });
 	};
 
 	return (

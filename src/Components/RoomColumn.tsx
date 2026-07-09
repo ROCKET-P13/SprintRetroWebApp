@@ -7,7 +7,7 @@ import {
 
 import { AddCommentBox } from '@/Components/AddCommentBox';
 import { CommentCard } from '@/Components/CommentCard';
-import { deleteColumnStore } from '@/stores/deleteColumnStore';
+import { removeColumnStore } from '@/stores/removeColumnStore';
 
 export interface RoomColumnProps {
 	id: string;
@@ -31,8 +31,8 @@ export const RoomColumn = ({
 	comments = [],
 	dragHandleProps,
 }: RoomColumnProps) => {
-	const setColumnToDelete = deleteColumnStore((state) => state.setColumnToDelete);
-	const openDeleteColumnDialog = deleteColumnStore((state) => state.openDialog);
+	const setColumnToDelete = removeColumnStore((state) => state.setColumnToDelete);
+	const openDeleteColumnDialog = removeColumnStore((state) => state.openDialog);
 	return (
 		<div
 			className="
