@@ -24,6 +24,7 @@ export const AddColumnCard = () => {
 			return;
 		}
 		setTitle('');
+		toggleIsAddingColumn();
 
 		await addColumnMutation.mutateAsync({ title: title });
 	};
