@@ -40,8 +40,6 @@ export const CommentCard = ({ id, body, votes = [], createdBy }: CommentCardProp
 	};
 
 	const handleRemoveVote = async () => {
-		const voteId = _.chain(votes).find((vote) => vote.participantName == session.participantName).get('id').value();
-		console.log({ voteId });
 		await removeVoteMutation.mutateAsync({
 			commentId: id,
 			voteId: _.chain(votes).find((vote) => vote.participantName == session.participantName).get('id').value(),

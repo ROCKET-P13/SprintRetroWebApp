@@ -66,7 +66,7 @@ export const useAddVoteMutation = (
 									return {
 										...comment,
 										votes: [
-											...comment.votes,
+											...(comment.votes || []),
 											{
 												id: temporaryId,
 												participantName,
@@ -100,7 +100,7 @@ export const useAddVoteMutation = (
 			);
 		},
 		onSuccess: (
-			CreateVoteResponse,
+			response,
 			_,
 			context
 		) => {
@@ -114,20 +114,24 @@ export const useAddVoteMutation = (
 					return {
 						...room,
 						columns: room.columns.map((column) => {
+							if (column.id !== response.columnId) {
+								return column;
+							}
+
 							return {
 								...column,
 								comments: column.comments.map((comment) => {
-									if (comment.id !== CreateVoteResponse.columnId) {
+									if (comment.id !== response.commentId) {
 										return comment;
 									}
 
 									return {
 										...comment,
-										votes: comment.votes.map((vote) => {
+										votes: comment.votes ? comment.votes.map((vote) => {
 											return vote.id === context?.temporaryId
-												? CreateVoteResponse
+												? response
 												: vote;
-										}),
+										}) : [],
 									};
 								}),
 							};
