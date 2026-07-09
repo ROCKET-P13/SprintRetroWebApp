@@ -24,18 +24,20 @@ export interface CreateVoteResponse {
 }
 
 export class VotesAPI {
-	#url = '/votes';
+	// #url = '/votes';
+	#url: string;
 	#apiClient: APIClient;
 	#roomId: string;
 
 	constructor (params: VotesAPIConstructorParams) {
 		this.#apiClient = params.apiClient ?? new APIClient();
 		this.#roomId = params.roomId;
+		this.#url = `/rooms/${this.#roomId}/votes`;
 	}
 
 	async add ({ participantId, commentId }: AddVoteParams): Promise<CreateVoteResponse> {
 		const vote = await this.#apiClient.post({
-			url: `/rooms/${this.#roomId}${this.#url}`,
+			url: this.#url,
 			body: { participantId, commentId },
 		}) as CreateVoteResponse;
 
@@ -44,7 +46,7 @@ export class VotesAPI {
 
 	async remove ({ voteId }: RemoveVoteParams) {
 		const response = await this.#apiClient.delete({
-			url: `/rooms/${this.#roomId}${this.#url}/${voteId}`,
+			url: `${this.#url}/${voteId}`,
 		});
 
 		return response;

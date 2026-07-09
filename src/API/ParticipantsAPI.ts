@@ -12,18 +12,19 @@ interface CreateParams {
 }
 
 export class ParticipantsAPI {
-	#url = '/participants';
+	#url: string;
 	#apiClient: APIClient;
 	#roomId: string;
 
 	constructor (params: ParticipantsAPIConstructorParams) {
 		this.#apiClient = params.apiClient ?? new APIClient();
 		this.#roomId = params.roomId;
+		this.#url = `/participants/${this.#roomId}`;
 	}
 
 	async create ({ name }: CreateParams) {
 		const room = await this.#apiClient.post({
-			url: `${this.#url}/${this.#roomId}`,
+			url: this.#url,
 			body: { name },
 		}) as Room;
 
