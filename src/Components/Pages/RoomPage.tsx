@@ -20,6 +20,7 @@ import { Plus } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import { AddColumnCard } from '@/Components/AddColumnCard';
+import { DeleteColumnDialog } from '@/Components/DeleteColumnDialog';
 import { RoomColumn } from '@/Components/RoomColumn';
 import { SortableRoomColumn } from '@/Components/SortableRoomColumn';
 import { useUpdateColumnPositionsMutation } from '@/hooks/mutations/useUpdateColumnPositionsMutation';
@@ -51,9 +52,10 @@ export const RoomPage = () => {
 
 	const room = roomStore((state) => state.room);
 	const setRoomColumns = roomStore((state) => state.setRoomColumns);
+	const session = roomStore((state) => state.session);
+
 	const isAddingColumn = addColumnStore((state) => state.isAddingColumn);
 	const toggleIsAddingColumn = addColumnStore((state) => state.toggleIsAddingColumn);
-	const session = roomStore((state) => state.session);
 
 	const isRoomAdmin = useMemo(() => room?.createdBy === session.participantId, [room, session]);
 	const [activeColumn, setActiveColumn] = useState<Column | null>(null);
@@ -225,6 +227,8 @@ export const RoomPage = () => {
 					}
 				</DragOverlay>
 			</DndContext>
+
+			<DeleteColumnDialog />
 		</div>
 	);
 };

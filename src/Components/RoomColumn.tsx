@@ -1,11 +1,13 @@
 import { Icon } from '@ui/Icon';
 import {
 	GripVertical,
-	MessageSquare
+	MessageSquare,
+	Trash
 } from 'lucide-react';
 
 import { AddCommentBox } from '@/Components/AddCommentBox';
 import { CommentCard } from '@/Components/CommentCard';
+import { deleteColumnStore } from '@/stores/deleteColumnStore';
 
 export interface RoomColumnProps {
 	id: string;
@@ -29,6 +31,8 @@ export const RoomColumn = ({
 	comments = [],
 	dragHandleProps,
 }: RoomColumnProps) => {
+	const setColumnToDelete = deleteColumnStore((state) => state.setColumnToDelete);
+	const openDeleteColumnDialog = deleteColumnStore((state) => state.openDialog);
 	return (
 		<div
 			className="
@@ -43,26 +47,27 @@ export const RoomColumn = ({
 		>
 			<div className="border-b px-4 py-3">
 				<div className="flex items-center justify-between">
-					<div className="flex items-center gap-2">
-						<div
-							{...dragHandleProps}
-							className="
+					<div className="flex items-center gap-2 justify-between w-full">
+						<div className='flex flex-row gap-2 items-center'>
+							<div
+								{...dragHandleProps}
+								className="
 								cursor-grab
 								active:cursor-grabbing
 							"
-						>
-							<Icon
-								as={GripVertical}
-								className="text-muted-foreground"
-							/>
-						</div>
+							>
+								<Icon
+									as={GripVertical}
+									className="text-muted-foreground"
+								/>
+							</div>
 
-						<h2 className="font-medium">
-							{title}
-						</h2>
+							<h2 className="font-medium">
+								{title}
+							</h2>
 
-						<div
-							className="
+							<div
+								className="
 								rounded-full
 								bg-muted
 								px-2
@@ -70,8 +75,23 @@ export const RoomColumn = ({
 								text-xs
 								text-muted-foreground
 							"
-						>
-							{comments.length}
+							>
+								{comments.length}
+							</div>
+						</div>
+
+						<div>
+							<button
+								className='p-1 rounded-md hover:bg-muted hover:cursor-pointer'
+								onClick={() => {
+									openDeleteColumnDialog();
+									setColumnToDelete({ id, title });
+								}}
+							>
+								<Icon
+									as={Trash}
+								/>
+							</button>
 						</div>
 					</div>
 				</div>
