@@ -57,7 +57,7 @@ export const RoomPage = () => {
 	const isAddingColumn = addColumnStore((state) => state.isAddingColumn);
 	const toggleIsAddingColumn = addColumnStore((state) => state.toggleIsAddingColumn);
 
-	const isRoomAdmin = useMemo(() => room?.createdBy === session.participantId, [room, session]);
+	const isRoomAdmin = useMemo(() => room.createdBy === session.participantId, [room, session]);
 	const [activeColumn, setActiveColumn] = useState<Column | null>(null);
 	const updateColumnPositionsMutation = useUpdateColumnPositionsMutation({ roomId });
 	const columns = room.columns;
