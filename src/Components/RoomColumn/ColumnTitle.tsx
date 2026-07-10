@@ -74,10 +74,12 @@ export const ColumnTitle = ({ columnId, title }: ColumnTitleProps) => {
 				}
 			}}
 			className="
-				w-fit-content
+				field-sizing-content
+				min-w-12.5
 				cursor-text
 				rounded-md
-				px-2
+				pl-1
+				pr-1
 				py-1
 				font-medium
 				text-left
