@@ -16,18 +16,35 @@ export interface UpdateParams {
 	}>
 }
 
+export interface UpdateNameParams {
+	columns: Array<{
+		id: string;
+		title: string;
+	}>
+}
+
 export interface CreateColumnReponse {
 	id: string;
 	title: string;
 	position: number;
 }
 
-export interface UpdateColumnsResponse {
+export interface UpdateColumnPositionsResponse {
 	columns: Array<{
 		id: string;
 		title: string;
 		position: number;
 	}>
+}
+
+export interface UpdateColumnTitleParams {
+	id: string;
+	title: string;
+}
+
+export interface UpdateColumnTitleResponse {
+	id: string;
+	title: string;
 }
 
 export class ColumnsAPI {
@@ -48,11 +65,20 @@ export class ColumnsAPI {
 		}) as CreateColumnReponse;
 	}
 
-	async update ({ columns }: UpdateParams): Promise<UpdateColumnsResponse> {
+	async update ({ columns }: UpdateParams): Promise<UpdateColumnPositionsResponse> {
 		return await this.#apiClient.patch({
 			url: this.#url,
 			body: { columns },
-		}) as UpdateColumnsResponse;
+		}) as UpdateColumnPositionsResponse;
+	}
+
+	async updateTitle ({ id, title }: UpdateColumnTitleParams): Promise<UpdateColumnTitleResponse> {
+		return await this.#apiClient.patch({
+			url: `${this.#url}/${id}`,
+			body: {
+				title,
+			},
+		}) as UpdateColumnTitleResponse;
 	}
 
 	async remove ({ columnId }: { columnId: string }): Promise<object> {

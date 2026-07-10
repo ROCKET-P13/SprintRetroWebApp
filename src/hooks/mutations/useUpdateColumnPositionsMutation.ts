@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 import { useMemo } from 'react';
 
-import { ColumnsAPI, UpdateColumnsResponse, UpdateParams } from '@/API/ColumnsAPI';
+import { ColumnsAPI, UpdateColumnPositionsResponse, UpdateParams } from '@/API/ColumnsAPI';
 import { Room } from '@/types/Room';
 
 interface UseUpdateColumnPositionsMutation {
@@ -20,7 +20,7 @@ export const useUpdateColumnPositionsMutation = ({ roomId }: UseUpdateColumnPosi
 
 	const columnsAPI = useMemo(() => new ColumnsAPI({ roomId }), [roomId]);
 
-	return useMutation<UpdateColumnsResponse, Error, UpdateParams, MutationContext>({
+	return useMutation<UpdateColumnPositionsResponse, Error, UpdateParams, MutationContext>({
 		mutationFn: async ({ columns }) => {
 			return await columnsAPI.update({ columns });
 		},
@@ -37,7 +37,6 @@ export const useUpdateColumnPositionsMutation = ({ roomId }: UseUpdateColumnPosi
 					}
 
 					const columnsById = _.keyBy(room.columns, 'id');
-
 					const updatedColumnsById = _.keyBy(columns, 'id');
 
 					return {

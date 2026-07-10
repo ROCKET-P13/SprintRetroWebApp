@@ -4,7 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import {
 	RoomColumn,
 	RoomColumnProps
-} from './RoomColumn';
+} from './RoomColumn/RoomColumn';
 
 export const SortableRoomColumn = (
 	props: RoomColumnProps

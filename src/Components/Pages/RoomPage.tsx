@@ -21,7 +21,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { AddColumnCard } from '@/Components/AddColumnCard';
 import { DeleteColumnDialog } from '@/Components/DeleteColumnDialog';
-import { RoomColumn } from '@/Components/RoomColumn';
+import { RoomColumn } from '@/Components/RoomColumn/RoomColumn';
 import { SortableRoomColumn } from '@/Components/SortableRoomColumn';
 import { useUpdateColumnPositionsMutation } from '@/hooks/mutations/useUpdateColumnPositionsMutation';
 import { useGetRoom } from '@/hooks/queries/useGetRoom';
