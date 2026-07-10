@@ -78,9 +78,7 @@ export const ColumnTitle = ({ columnId, title }: ColumnTitleProps) => {
 				min-w-12.5
 				cursor-text
 				rounded-md
-				pl-1
-				pr-1
-				py-1
+				p-1
 				font-medium
 				text-left
 				transition-colors

@@ -25,23 +25,26 @@ export const ColumnHeader = ({ id, title, commentCount, dragHandleProps }: Colum
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-2 justify-between w-full">
 					<div className='flex flex-row gap-2 items-center'>
-						<div
-							{...dragHandleProps}
-							className="
+						{
+							!isRoomAdmin && (
+								<div
+									{...dragHandleProps}
+									className="
 								cursor-grab
 								active:cursor-grabbing
 							"
-						>
-							<Icon
-								as={GripVertical}
-								className="text-muted-foreground"
-							/>
-						</div>
-
+								>
+									<Icon
+										as={GripVertical}
+										className="text-muted-foreground"
+									/>
+								</div>
+							)
+						}
 						{
 							isRoomAdmin
 								? <ColumnTitle columnId={id} title={title} />
-								: <p>{title}</p>
+								: <p className='font-medium p-1'>{title}</p>
 						}
 
 						<div
