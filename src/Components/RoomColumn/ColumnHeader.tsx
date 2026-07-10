@@ -26,13 +26,13 @@ export const ColumnHeader = ({ id, title, commentCount, dragHandleProps }: Colum
 				<div className="flex items-center gap-2 justify-between w-full">
 					<div className='flex flex-row gap-2 items-center'>
 						{
-							!isRoomAdmin && (
+							isRoomAdmin && (
 								<div
 									{...dragHandleProps}
 									className="
-								cursor-grab
-								active:cursor-grabbing
-							"
+										cursor-grab
+										active:cursor-grabbing
+									"
 								>
 									<Icon
 										as={GripVertical}
